@@ -1,6 +1,7 @@
-import { getChatGPTUser, chatGPTSignInPath, chatGPTSignOutPath } from './chatgpt-auth';
+import { requireChatGPTUser } from './chatgpt-auth';
+import Dashboard from './inicio/dashboard';
 export const dynamic = 'force-dynamic';
-export default async function Login(){
-  const user=await getChatGPTUser();
-  return <main className="login-page"><div className="login-shell"><div className="login-brand"><span className="login-mark">✳</span><div><b>vetcita</b><small>PROSPECCIÓN</small></div></div><div className="login-card"><div className="login-icon">✳</div><div className="eyebrow">TU ESPACIO DE TRABAJO</div><h1>Bienvenido a<br/>Vetcita<span className="purple">.</span></h1><p>Tu directorio de clínicas y el seguimiento de tus visitas, en un solo lugar.</p>{user?<><div className="login-account"><span className="login-avatar">{(user.displayName||user.email).charAt(0).toUpperCase()}</span><div><small>SESIÓN INICIADA</small><strong>{user.displayName}</strong>{user.displayName!==user.email&&<span>{user.email}</span>}</div></div><a className="login-primary" href="/inicio">Entrar a prospección <span>→</span></a><a className="login-secondary" href={chatGPTSignOutPath('/')} target="_top">Cerrar sesión o cambiar de cuenta</a></>:<><a className="login-primary" href={chatGPTSignInPath('/inicio')} target="_top">Iniciar sesión <span>→</span></a><p className="login-note">Accede con la cuenta autorizada para este espacio.</p></>}</div><div className="login-footer">Vetcita · Ciudad de México</div></div></main>
+export default async function Home(){
+  await requireChatGPTUser('/');
+  return <Dashboard/>;
 }
